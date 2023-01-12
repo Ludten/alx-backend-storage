@@ -8,4 +8,3 @@ BEGIN
 	WHERE user_id = id;
 END//
 DELIMITER ;
-
