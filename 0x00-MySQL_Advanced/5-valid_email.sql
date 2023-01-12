@@ -6,7 +6,7 @@ CREATE TRIGGER valid
 BEFORE UPDATE ON users FOR EACH ROW
 BEGIN
 	IF OLD.email != NEW.email THEN
-		SET NEW.valid_email = ABS(OLD.valid_email - 1);
+		SET NEW.valid_email = 0;
 	END IF;
 END //
 DELIMITER ;
