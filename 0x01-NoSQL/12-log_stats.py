@@ -11,18 +11,9 @@ if __name__ == "__main__":
     nginx_collection = client.logs.nginx
     print("{} logs".format(nginx_collection.count_documents({})))
     print("Methods:")
-    print(
-        """     method GET: {}
-     method POST: {}
-     method PUT: {}
-     method PATCH: {}
-     method DELETE: {}""".format(
-            nginx_collection.count_documents({"method": "GET"}),
-            nginx_collection.count_documents({"method": "POST"}),
-            nginx_collection.count_documents({"method": "PUT"}),
-            nginx_collection.count_documents({"method": "PATCH"}),
-            nginx_collection.count_documents({"method": "DELETE"})
-        )
-    )
+    methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+    for method in methods:
+        req_count = nginx_collection.count_documents({'method': method})
+        print('\tmethod {}: {}'.format(method, req_count))
     print("{} status check".format(nginx_collection.count_documents(
         {"method": "GET", "path": "/status"})))
