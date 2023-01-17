@@ -34,7 +34,7 @@ if __name__ == "__main__":
         print('\tmethod {}: {}'.format(method, req_count))
     print("{} status check".format(nginx_collection.count_documents(
         {"method": "GET", "path": "/status"})))
-    print('IPs')
+    print('IPs:')
     top_ip = top_ips(nginx_collection)
     for ip in top_ip:
         print("\t{}: {}".format(ip.get('_id'), ip.get('count')))
