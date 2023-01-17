@@ -16,8 +16,7 @@ if __name__ == "__main__":
     \tmethod POST: {}
     \tmethod PUT: {}
     \tmethod PATCH: {}
-    \tmethod DELETE: {}
-        """.format(
+    \tmethod DELETE: {}""".format(
             nginx_collection.count_documents({"method": "GET"}),
             nginx_collection.count_documents({"method": "POST"}),
             nginx_collection.count_documents({"method": "PUT"}),
