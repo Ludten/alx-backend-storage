@@ -12,11 +12,11 @@ if __name__ == "__main__":
     print("{} logs".format(nginx_collection.count_documents({})))
     print("Methods:")
     print(
-        """\tmethod GET: {}
-    \tmethod POST: {}
-    \tmethod PUT: {}
-    \tmethod PATCH: {}
-    \tmethod DELETE: {}""".format(
+        """     method GET: {}
+     method POST: {}
+     method PUT: {}
+     method PATCH: {}
+     method DELETE: {}""".format(
             nginx_collection.count_documents({"method": "GET"}),
             nginx_collection.count_documents({"method": "POST"}),
             nginx_collection.count_documents({"method": "PUT"}),
