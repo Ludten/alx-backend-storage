@@ -25,21 +25,34 @@ def count_calls(method: Callable) -> Callable:
 
 
 def call_history(method: Callable) -> Callable:
-    '''Tracks the call details of a method in a Cache class.
-    '''
+    """
+    Counts the number of times a function is called
+    Args:
+        method: The function to be decorated
+    Returns:
+        The decorated function
+    """
+    key = method.__qualname__
+    inputs = key + ":inputs"
+    outputs = key + ":outputs"
+
     @wraps(method)
-    def invoker(self, *args, **kwargs) -> Any:
-        '''Returns the method's output after storing its inputs and output.
-        '''
-        in_key = '{}:inputs'.format(method.__qualname__)
-        out_key = '{}:outputs'.format(method.__qualname__)
-        if isinstance(self._redis, redis.Redis):
-            self._redis.rpush(in_key, str(args))
-        output = method(self, *args, **kwargs)
-        if isinstance(self._redis, redis.Redis):
-            self._redis.rpush(out_key, output)
-        return output
-    return invoker
+    def wrapper(self, *args, **kwargs):
+        """
+        Wrapper function for the decorated function
+        Args:
+            self: The object instance
+            *args: The arguments passed to the function
+            **kwargs: The keyword arguments passed to the function
+        Returns:
+            The return value of the decorated function
+        """
+        self._redis.rpush(inputs, str(args))
+        data = method(self, *args, **kwargs)
+        self._redis.rpush(outputs, str(data))
+        return data
+
+    return wrapper
 
 
 def replay(method: Callable) -> None:
