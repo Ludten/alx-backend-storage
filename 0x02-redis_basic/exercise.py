@@ -21,7 +21,7 @@ def count_calls(method: Callable) -> Callable:
         if isinstance(self._redis, redis.Redis):
             self._redis.incr(method.__qualname__)
         return method(self, *args, **kwargs)
-    return
+    return invoker
 
 
 def call_history(method: Callable) -> Callable:
