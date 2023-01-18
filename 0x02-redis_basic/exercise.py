@@ -24,6 +24,6 @@ class Cache:
         self._redis.flushdb()
 
     def store(self, data: Union[str, bytes, int, float]) -> str:
-        key = uuid4()
+        key: str = str(uuid4())
         self._redis.set(key, data)
         return key
