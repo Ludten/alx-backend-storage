@@ -55,23 +55,24 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
-def replay(method: Callable) -> None:
+def replay(fn: Callable) -> None:
     """
-    Replays the history of a function
+    Display the history of calls of a particular function.
     Args:
-        method: The function to be decorated
-    Returns:
-        None
+        fn (Callable): a function whose history to display
     """
-    name = method.__qualname__
+    display = ''
+    fnName = fn.__qualname__
+    ikey = '{}:inputs'.format(fn.__qualname__)
+    okey = '{}:outputs'.format(fn.__qualname__)
     cache = redis.Redis()
-    calls = cache.get(name).decode("utf-8")
-    print("{} was called {} times:".format(name, calls))
-    inputs = cache.lrange(name + ":inputs", 0, -1)
-    outputs = cache.lrange(name + ":outputs", 0, -1)
-    for i, o in zip(inputs, outputs):
-        print("{}(*{}) -> {}".format(name, i.decode('utf-8'),
-                                     o.decode('utf-8')))
+    if not cache.exists(ikey):
+        return
+    display += '{} was called {} times:\n'.format(fnName, cache.llen(ikey))
+    for i, o in zip(cache.lrange(ikey, 0, -1), cache.lrange(okey, 0, -1)):
+        display += "{}(*{}) -> {}\n".format(
+            fnName, i.decode('utf-8'), o.decode('utf-8'))
+    print(display, end="")
 
 
 class Cache:
