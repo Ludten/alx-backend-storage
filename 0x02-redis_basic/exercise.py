@@ -110,10 +110,10 @@ class Cache:
         """
         Get a int variable from redis
         """
-        return self.get(key, str)
+        return self.get(key, lambda s: s.decode('utf-8'))
 
     def get_int(self, key: str) -> Optional[bytes]:
         """
         Get a int variable from redis
         """
-        return self.get(key, int)
+        return self.get(key, lambda n: int(n))
