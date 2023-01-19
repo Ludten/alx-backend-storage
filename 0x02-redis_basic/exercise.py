@@ -75,7 +75,7 @@ def replay(fn: Callable) -> None:
     print(display, end="")
 
 
-class Cache:
+class Cache(object):
     """
     Class representing Redis cache
 
@@ -93,6 +93,9 @@ class Cache:
     @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
+        """
+        Store a variable
+        """
         key: str = str(uuid4())
         self._redis.set(key, data)
         return key
@@ -102,6 +105,9 @@ class Cache:
                                            Union[bytes, None, bytes]],
                                   None] = None
     ) -> Union[Optional[bytes], bytes]:
+        """
+        get a variable
+        """
         if fn is not None:
             return fn(self._redis.get(key))
         return self._redis.get(key)
